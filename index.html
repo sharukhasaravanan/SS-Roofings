@@ -1,0 +1,1849 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes">
+    <title>SS ROOFINGS • Complete Calculator</title>
+    <!-- Google Font: Poppins -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* ----- BASE & RESET ----- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(100deg, #00416a);
+            min-height: 100vh;
+            padding: 15px;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+        }
+
+        /* MAIN CONTAINER */
+        .calculator-container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 3px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            padding: 30px;
+            max-width: 1400px;
+            width: 100%;
+            margin: 0 auto;
+        }
+
+        /* ----- LOGO ----- */
+        .logo {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .logo h1 {
+            color: #2d3748;
+            font-size: 2.5rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            text-shadow: 2px 2px 0 rgba(0,0,0,0.1);
+        }
+
+        .logo span {
+            color: #fbbf24;
+            background: #2d3748;
+            padding: 0 10px;
+            border-radius: 20px;
+            display: inline-block;
+        }
+
+        .logo p {
+            color: #4a5568;
+            margin-top: 8px;
+            font-size: 1.1rem;
+            font-weight: 400;
+        }
+
+        /* ----- CARD STYLES – UNIFIED ----- */
+        .card {
+            background: #f5fffa;
+            border-radius: 4px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            border: 1px solid rgba(255,255,255,0.2);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 35px -8px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Section headers */
+        .section-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e2e8f0;
+        }
+
+        .section-header h2 {
+            color: #2d3748;
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .section-header h2 span {
+            color: #667eea;
+            margin-right: 10px;
+        }
+
+        /* ----- DEFAULT PRICES - IMPROVED UI ----- */
+        .default-prices {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border: 1px solid #dee2e6;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);
+        }
+
+        .default-prices h3 {
+            color: #2d3748;
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .default-prices h3:before {
+            content: "💰";
+            font-size: 1.2rem;
+        }
+
+        .price-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 12px;
+        }
+
+        .price-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: white;
+            padding: 8px 12px;
+            border-radius: 12px;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+            transition: all 0.2s;
+        }
+
+        .price-item:hover {
+            border-color: #667eea;
+            box-shadow: 0 4px 8px rgba(102, 126, 234, 0.1);
+        }
+
+        .price-item label {
+            font-weight: 600;
+            font-size: 0.85rem;
+            color: #4a5568;
+        }
+
+        .price-item input {
+            padding: 4px 8px;
+            border: 1px solid #cbd5e0;
+            border-radius: 8px;
+            width: 80px;
+            background: #f8fafc;
+            font-weight: 500;
+            font-size: 0.85rem;
+            text-align: right;
+            transition: all 0.2s;
+        }
+
+        .price-item input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        /* ----- SHEETS SECTIONS ----- */
+        .sheet-section {
+            margin-bottom: 30px;
+        }
+
+        .sheet-entries {
+            overflow-x: auto;
+            margin: 20px 0;
+            border-radius: 20px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .entry-header {
+            display: grid;
+            grid-template-columns: 110px 100px 100px 150px 60px 60px 90px 90px 90px 70px;
+            gap: 8px;
+            padding: 12px 10px;
+            background: #2d3748;
+            color: white;
+            font-weight: 600;
+            font-size: 0.75rem;
+            min-width: 1000px;
+        }
+
+        .entry-row {
+            display: grid;
+            grid-template-columns: 110px 100px 100px 150px 60px 60px 90px 90px 90px 70px;
+            gap: 8px;
+            padding: 12px 10px;
+            align-items: center;
+            min-width: 1000px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .entry-row:nth-child(even) { background: #f7fafc; }
+
+        .dimension-inputs {
+            display: flex;
+            gap: 3px;
+        }
+
+        .dimension-inputs input {
+            width: 35px;
+            text-align: center;
+            padding: 2px;
+            font-size: 0.8rem;
+        }
+
+        .input-unit {
+            font-size: 0.6rem;
+            color: #718096;
+            text-align: center;
+        }
+
+        .quantity-input {
+            width: 55px !important;
+            text-align: left;
+            padding: 2px 6px;
+            margin: 0 auto;
+        }
+
+        .bend-checkbox {
+            width: 15px;
+            height: 15px;
+            margin: 0 auto;
+            display: block;
+        }
+
+        .delete-btn {
+            background: #f56565;
+            color: white;
+            border: none;
+            border-radius: 20px;
+            padding: 4px 8px;
+            cursor: pointer;
+            font-size: 12px;
+            width: fit-content;
+            margin: 0 auto;
+            transition: background 0.2s;
+        }
+
+        .delete-btn:hover {
+            background: #c53030;
+        }
+
+        /* action buttons */
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin: 25px 0 15px;
+        }
+
+        .btn {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 60px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.2s;
+            font-size: 1rem;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        .btn-primary { background: #667eea; color: white; }
+        .btn-success { background: #48bb78; color: white; }
+        .btn-danger { background: #f56565; color: white; }
+        .btn-warning { background: #fbbf24; color: #2d3748; }
+        .btn-outline { background: transparent; border: 5px solid #9f7aea; color: #9f7aea; }
+        .btn-upload { background: #9f7aea; color: white; }
+
+        .btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 20px -5px rgba(0,0,0,0.3);
+        }
+
+        /* global bend - now only for profile */
+        .bend-option {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 16px 25px;
+            background: #fef9e7;
+            border-radius: 20px;
+            border: 1px solid #fbbf24;
+            justify-content: center;
+            margin: 20px 0 30px;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .bend-option input {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+        }
+
+        .bend-option label {
+            font-weight: 600;
+            font-size: 0.95rem;
+            color: #2d3748;
+            cursor: pointer;
+        }
+
+        /* ----- RIDGE SECTION ----- */
+        .ridge-section {
+            display: none;
+        }
+        .ridge-section.visible {
+            display: block;
+        }
+
+        .ridge-selector {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 20px;
+            margin-bottom: 25px;
+            position: relative;
+        }
+
+        .ridge-card {
+            background: #ffcc66;
+            border-radius: 24px;
+            padding: 20px 10px 15px;
+            cursor: pointer;
+            border: 6px solid transparent;
+            transition: all 0.2s;
+            box-shadow: 0 10px 20px -5px rgba(0,0,0,0.1);
+            text-align: center;
+            position: relative;
+        }
+
+        .ridge-card.selected {
+            border-color: #00e6e6;
+            background: #ffcc66;
+            transform: scale(1.02);
+        }
+
+        .ridge-card svg {
+            width: 100%;
+            height: 140px;
+            object-fit: contain;
+            background: #f7fafc;
+            border-radius: 7px;
+            padding: 8px;
+        }
+
+        .ridge-card h4 {
+            font-size: 1rem;
+            margin: 12px 0 5px;
+            font-weight: 600;
+            color: #2d3748;
+        }
+
+        .ridge-card small {
+            color: #9f7aea;
+            font-weight: 600;
+        }
+
+        .delete-ridge-btn {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background: #f56565;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            font-size: 14px;
+            line-height: 1;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+        }
+        .delete-ridge-btn:hover {
+            background: #c53030;
+        }
+
+        .ridge-display-box {
+            background: black;
+            border-radius: 14px;
+            padding: 15px;
+            margin-bottom: 25px;
+            border: 0px solid #9f7aea;
+        }
+
+        .diagram-container {
+            position: relative;
+            width: 70%;
+            max-width: 500px;
+            margin: 0 auto;
+            background: #f7fafc;
+            border-radius: 2px;
+            padding: 10px;
+        }
+
+        #ridgeDiagram {
+            width: 100%;
+            height: auto;
+            min-height: 10px;
+            display: block;
+            border-radius: 12px;
+            background: white;
+        }
+
+        #labelOverlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        .side-label {
+            position: absolute;
+            transform: translate(-50%, -50%);
+            background: #9f7aea;
+            color: white;
+            padding: 4px 10px;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 12px;
+            border: 2px solid white;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            pointer-events: auto;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+
+        .side-label.dim-set { background: #48bb78; }
+        .side-label.highlight {
+            background: #fbbf24;
+            transform: translate(-50%, -50%) scale(1.1);
+            z-index: 20;
+        }
+
+        .ridge-controls {
+            display: grid;
+            grid-template-columns: minmax(200px, 1fr) 2fr;
+            gap: 25px;
+            margin-bottom: 25px;
+            background: white;
+            padding: 20px;
+            border-radius: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.03);
+            border: 1px solid #e2e8f0;
+        }
+
+        .side-picker select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #9f7aea;
+            border-radius: 16px;
+            font-size: 1rem;
+            font-weight: 600;
+            background: white;
+        }
+
+        .dimension-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            gap: 15px;
+        }
+
+        .dim-card {
+            background: #f7fafc;
+            border-radius: 16px;
+            padding: 12px 10px;
+            border-left: 4px solid #9f7aea;
+        }
+
+        .dim-card strong {
+            display: block;
+            font-size: 1.2rem;
+            color: #9f7aea;
+            margin-bottom: 5px;
+        }
+
+        .dim-card input {
+            width: 100%;
+            padding: 6px 8px;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            font-size: 0.9rem;
+        }
+
+        .ridge-pricing {
+            background: linear-gradient(135deg, #9f7aea, #667eea);
+            border-radius: 20px;
+            padding: 20px;
+            color: white;
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 20px;
+        }
+
+        .ridge-pricing .price-item {
+            background: rgba(255,255,255,0.15);
+            backdrop-filter: blur(8px);
+            padding: 12px;
+            border-radius: 14px;
+        }
+
+        .ridge-pricing .price-item input {
+            width: 100%;
+            margin-top: 8px;
+            padding: 8px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+        }
+
+        .ridge-pricing .price-display {
+            background: #2d3748;
+            border-radius: 14px;
+            padding: 15px;
+            text-align: center;
+        }
+
+        .ridge-pricing .price-display .value {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: #fbbf24;
+        }
+
+        /* ----- SCREWS SECTION (MULTIPLE ENTRIES) ----- */
+        .screws-section {
+            background: white;
+        }
+
+        .screws-entries {
+            margin: 20px 0;
+        }
+
+        .screw-header {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr 1fr 60px;
+            gap: 12px;
+            padding: 10px;
+            background: #2d3748;
+            color: white;
+            font-weight: 600;
+            font-size: 0.85rem;
+            border-radius: 12px;
+            margin-bottom: 8px;
+        }
+
+        .screw-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr 1fr 60px;
+            gap: 12px;
+            padding: 8px 10px;
+            align-items: center;
+            background: #f7fafc;
+            border-radius: 12px;
+            margin-bottom: 8px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .screw-row select, .screw-row input {
+            width: 100%;
+            padding: 8px 10px;
+            border: 1px solid #cbd5e0;
+            border-radius: 10px;
+            font-size: 0.85rem;
+        }
+
+        .screw-row .delete-screw-btn {
+            background: #f56565;
+            color: white;
+            border: none;
+            border-radius: 30px;
+            padding: 6px 10px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .screw-row .delete-screw-btn:hover {
+            background: #c53030;
+        }
+
+        .screw-total {
+            background: #2d3748;
+            color: white;
+            padding: 16px;
+            border-radius: 20px;
+            text-align: center;
+            margin-top: 15px;
+        }
+
+        .screw-total .value {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #fbbf24;
+            display: block;
+        }
+
+        /* ----- RESULTS ----- */
+        .result {
+            background: #00416a;
+        }
+
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+
+        .summary-item {
+            background: #f7fafc;
+            padding: 18px;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.02);
+        }
+
+        .summary-item .value {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: #e53e3e;
+        }
+
+        .grand-total {
+            background: #2d3748;
+            color: white;
+            padding: 20px;
+            border-radius: 20px;
+            text-align: center;
+            font-size: 1.5rem;
+            margin-top: 20px;
+        }
+
+        /* ----- PRINT STYLES (professional bill) ----- */
+        @media print {
+            body * { visibility: hidden; }
+            .print-bill, .print-bill * { visibility: visible; }
+            .print-bill {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+                padding: 10px;
+                background: white;
+                font-size: 11px;
+            }
+            .print-bill .bill-container {
+                border: 4px solid #2d3748;
+                border-radius: 20px;
+                padding: 15px;
+                max-width: 1100px;
+                margin: 0 auto;
+                box-shadow: none;
+            }
+            .print-bill h1 { 
+                font-size: 22px;
+                margin-bottom: 5px;
+                color: #2d3748;
+            }
+            .print-bill h1 span { 
+                color: #fbbf24;
+                background: #2d3748;
+                padding: 0 8px;
+                border-radius: 40px;
+            }
+            .print-bill table {
+                width: 100%;
+                border-collapse: collapse;
+                margin: 10px 0;
+                page-break-inside: avoid;
+            }
+            .print-bill th {
+                background: #34495e;
+                color: white;
+                padding: 6px;
+                font-size: 11px;
+                border: 2px solid #2d3748;
+                font-weight: 600;
+            }
+            .print-bill td {
+                padding: 5px 6px;
+                border: 2px solid #cbd5e0;
+            }
+            .print-bill tr:nth-child(even) { background: #f7fafc; }
+            .print-bill .customer-info {
+                background: #f8f9fa;
+                padding: 10px;
+                border-radius: 8px;
+                margin-bottom: 10px;
+                border: 2px solid #e2e8f0;
+            }
+            .print-bill .ridge-print-diagram {
+                text-align: center;
+                margin: 10px 0;
+                page-break-inside: avoid;
+            }
+            .print-bill .ridge-print-diagram svg {
+                max-width: 220px;
+                height: auto;
+                border: none;
+                background: transparent;
+                padding: 0;
+            }
+            .print-bill .summary {
+                background: #e8f4fc;
+                padding: 10px;
+                border-radius: 8px;
+                margin: 10px 0;
+                display: flex;
+                justify-content: space-between;
+                border: 2px solid #bee3f8;
+            }
+            .print-bill .terms {
+                background: #fff3cd;
+                padding: 10px;
+                border-radius: 8px;
+                border: 2px solid #ffeaa7;
+            }
+            .print-bill .share-buttons { display: none; }
+        }
+
+        .note {
+            margin-top: 30px;
+            padding: 20px;
+            background: #f7fafc;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            color: #2d3748;
+            text-align: center;
+        }
+
+        .upload-row {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+
+        /* ----- CUSTOMER DETAILS ----- */
+        .customer-details {
+            background: #f0f9ff;
+            border-left: 4px solid #3182ce;
+        }
+        .customer-details input {
+            width: 100%;
+            padding: 10px 15px;
+            border: 2px solid #e2e8f0;
+            border-radius: 30px;
+            font-size: 0.95rem;
+            transition: 0.2s;
+        }
+        .customer-details input:focus {
+            outline: none;
+            border-color: #3182ce;
+            box-shadow: 0 0 0 3px rgba(49,130,206,0.2);
+        }
+
+        /* ----- RESPONSIVE FIXES ----- */
+        @media (max-width: 900px) {
+            .ridge-controls { grid-template-columns: 1fr; }
+            .ridge-pricing { grid-template-columns: 1fr; }
+        }
+        @media (max-width: 600px) {
+            .sheet-type-buttons { flex-direction: column; align-items: stretch; }
+            .sheet-type-btn { width: 100%; }
+            .price-grid { grid-template-columns: 1fr; }
+            .screw-header, .screw-row {
+                grid-template-columns: 1fr 1fr 1fr 1fr 60px;
+                font-size: 0.7rem;
+            }
+            .summary-grid { grid-template-columns: 1fr 1fr; }
+            .entry-header, .entry-row {
+                grid-template-columns: 90px 80px 80px 80px 50px 50px 70px 70px 70px 50px;
+                font-size: 0.7rem;
+            }
+            .dimension-inputs input { width: 28px; }
+        }
+        @media (max-width: 400px) {
+            .summary-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div class="calculator-container">
+        <!-- LOGO -->
+        <div class="logo">
+            <h1>SS <span>ROOFINGS</span></h1>
+            <p>modern • profile • liner • ridge • screws</p>
+        </div>
+
+        <!-- CUSTOMER DETAILS (for quotation) -->
+        <div class="card customer-details">
+            <h3>👤 Customer Details (for quotation)</h3>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px,1fr)); gap:15px;">
+                <input type="text" id="customerName" placeholder="Full Name">
+                <input type="tel" id="customerPhone" placeholder="Phone Number">
+                <input type="text" id="customerAddress" placeholder="Address">
+            </div>
+        </div>
+
+        <!-- PROFILE SHEETS SECTION -->
+        <div class="card sheet-section">
+            <div class="section-header">
+                <h2><span>📋</span> Profile Sheets (1085mm breadth)</h2>
+            </div>
+            
+            <!-- Default Prices (reference) - now includes Bend Charge -->
+            <div class="default-prices">
+                <h3>Reference Prices (₹/sqm) & Bend Charge</h3>
+                <div class="price-grid">
+                    <div class="price-item"><label>0.35mm</label><input type="number" id="profile-price-0.35" value="323" readonly></div>
+                    <div class="price-item"><label>0.40mm</label><input type="number" id="profile-price-0.40" value="345" readonly></div>
+                    <div class="price-item"><label>0.45mm</label><input type="number" id="profile-price-0.45" value="366" readonly></div>
+                    <div class="price-item"><label>0.47mm</label><input type="number" id="profile-price-0.47" value="387.50" readonly></div>
+                    <div class="price-item"><label>0.50mm</label><input type="number" id="profile-price-0.50" value="420" readonly></div>
+                    <div class="price-item"><label>Bend ₹/m²</label><input type="number" id="bendCharge" value="10.76" step="0.01" min="0" oninput="updateAllSheetCalculations()"></div>
+                </div>
+            </div>
+
+            <!-- Profile entries -->
+            <div class="sheet-entries">
+                <div class="entry-header">
+                    <div>Length</div><div>Thickness</div><div>Custom ₹</div><div>Color</div>
+                    <div>Qty</div><div>Bend</div><div>Area/Sht</div><div>Total m²</div><div>Price</div><div>Action</div>
+                </div>
+                <div id="profile-entries-container"></div>
+            </div>
+
+            <!-- Profile action buttons -->
+            <div class="action-buttons">
+                <button class="btn btn-primary" onclick="addProfileEntry()">+ Add Profile Sheet</button>
+            </div>
+        </div>
+        
+        <!-- Global Bend Option - only for profile sheets (moved below profile) -->
+        <div class="bend-option">
+            <input type="checkbox" id="bendAllRequired" onchange="toggleAllProfileBends()">
+            <label for="bendAllRequired"><strong>Apply Bend to ALL Profile Sheets (+₹<span id="bendChargeDisplay">10.76</span>/m²)</strong></label>
+        </div>
+
+        <!-- LINER SHEETS SECTION -->
+        <div class="card sheet-section">
+            <div class="section-header">
+                <h2><span>📋</span> Liner Sheets (1188mm breadth)</h2>
+            </div>
+            
+            <!-- Default Prices (reference) - Improved UI -->
+            <div class="default-prices">
+                <h3>Reference Prices (₹/sqm)</h3>
+                <div class="price-grid">
+                    <div class="price-item"><label>0.35mm</label><input type="number" id="liner-price-0.35" value="323" readonly></div>
+                    <div class="price-item"><label>0.40mm</label><input type="number" id="liner-price-0.40" value="345" readonly></div>
+                    <div class="price-item"><label>0.45mm</label><input type="number" id="liner-price-0.45" value="366" readonly></div>
+                    <div class="price-item"><label>0.47mm</label><input type="number" id="liner-price-0.47" value="387.50" readonly></div>
+                    <div class="price-item"><label>0.50mm</label><input type="number" id="liner-price-0.50" value="420" readonly></div>
+                </div>
+            </div>
+
+            <!-- Liner entries (no Bend column in header) -->
+            <div class="sheet-entries">
+                <div class="entry-header">
+                    <div>Length</div><div>Thickness</div><div>Custom ₹</div><div>Color</div>
+                    <div>Qty</div><div></div><div>Area/Sht</div><div>Total m²</div><div>Price</div><div>Action</div>
+                </div>
+                <div id="liner-entries-container"></div>
+            </div>
+
+            <!-- Liner action buttons -->
+            <div class="action-buttons">
+                <button class="btn btn-primary" onclick="addLinerEntry()">+ Add Liner Sheet</button>
+            </div>
+        </div>
+
+        <!-- Ridge toggle -->
+        <div style="display: flex; justify-content: center; margin: 20px 0;">
+            <button class="btn btn-outline" onclick="toggleRidgeSection()">➕ Add Ridge (optional)</button>
+        </div>
+
+        <!-- RIDGE DESIGNER -->
+        <div id="ridgeSection" class="ridge-section card">
+            <h2 style="margin-bottom: 15px;">🏔️ Ridge Designer</h2>
+            <div class="ridge-selector" id="ridgeSelector"></div>
+
+            <!-- Upload new ridge SVG -->
+            <div class="upload-row">
+                <input type="file" id="svgUpload" accept=".svg" style="display: none;">
+                <button class="btn btn-upload" onclick="document.getElementById('svgUpload').click()">📤 Upload SVG to add new ridge</button>
+                <span style="font-size:0.9rem; color:#4a5568;">(custom ridges are saved permanently)</span>
+            </div>
+
+            <div class="ridge-display-box">
+                <div class="diagram-container">
+                    <svg id="ridgeDiagram" viewBox="0 0 21000 29700" preserveAspectRatio="xMidYMid meet"></svg>
+                    <div id="labelOverlay"></div>
+                </div>
+            </div>
+
+            <div class="ridge-controls">
+                <div class="side-picker">
+                    <label>🔍 Highlight side:</label>
+                    <select id="sideSelect" onchange="highlightSide()"></select>
+                    <p style="margin-top:12px; font-size:0.9rem;">Click label to select side.</p>
+                </div>
+                <div class="dimension-grid" id="dimensionGrid"></div>
+            </div>
+
+            <div class="ridge-pricing">
+                <div class="price-item">
+                    <label>Length (ft)</label>
+                    <input type="number" id="ridgeLength" value="0" min="0" step="0.1" oninput="calcRidgeTotal()">
+                </div>
+                <div class="price-item">
+                    <label>₹/ft</label>
+                    <input type="number" id="ridgePricePerFoot" value="0" min="0" step="1" oninput="calcRidgeTotal()">
+                </div>
+                <div class="price-display">
+                    <span class="label">Ridge cost</span>
+                    <span class="value" id="ridgeTotalPrice">₹0.00</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- SCREWS (MULTIPLE ENTRIES) -->
+        <div class="card screws-section">
+            <h2>🔩 Tata Screws</h2>
+            <div class="screws-entries">
+                <div class="screw-header">
+                    <div>Size</div><div>Quantity</div><div>₹/pc</div><div>Total</div><div></div>
+                </div>
+                <div id="screws-container"></div>
+            </div>
+            <div class="action-buttons" style="margin-top: 10px;">
+                <button class="btn btn-primary" onclick="addScrewEntry()">+ Add Screw Type</button>
+            </div>
+            <div class="screw-total">
+                <span>Total Screw Cost</span>
+                <span class="value" id="screwTotalPrice">₹0.00</span>
+            </div>
+        </div>
+
+        <!-- CALCULATE TOTAL -->
+        <div class="action-buttons" style="margin-top: 20px;">
+            <button class="btn btn-success" onclick="calculateTotal()">📊 Calculate Total</button>
+            <button class="btn btn-danger" onclick="resetAll()">Reset All</button>
+        </div>
+
+        <!-- RESULTS -->
+        <div class="result card" id="result" style="display: none;">
+            <h3>Order Summary</h3>
+            <div class="summary-grid">
+                <div class="summary-item"><h4>Profile Sheets</h4><div class="value" id="totalProfileSheets">0</div></div>
+                <div class="summary-item"><h4>Liner Sheets</h4><div class="value" id="totalLinerSheets">0</div></div>
+                <div class="summary-item"><h4>Total m²</h4><div class="value" id="totalSqm">0.000</div></div>
+                <div class="summary-item"><h4>With Bend</h4><div class="value" id="sheetsWithBend">0</div></div>
+                <div class="summary-item"><h4>Sheets Price</h4><div class="value" id="summaryTotal">₹0.00</div></div>
+                <div class="summary-item"><h4>Ridge+Screws</h4><div class="value" id="extraTotal">₹0.00</div></div>
+            </div>
+            <div class="breakdown" id="breakdown"></div>
+            <div class="grand-total" id="grandTotal">Grand Total: ₹0.00</div>
+
+            <!-- Print button -->
+            <div style="display: flex; justify-content: center; margin-top: 25px;">
+                <button class="btn btn-warning" onclick="printBill()">🖨️ Print Quotation</button>
+            </div>
+        </div>
+
+        <!-- Footer - updated location -->
+        <div class="note">
+            <p><strong>Profile:</strong> 1085mm | <strong>Liner:</strong> 1188mm | <strong>Bend:</strong> ₹<span id="bendChargeNote">10.76</span>/m² (Profile only)</p>
+            <p><strong>Ridge:</strong> 12 built‑in + upload your own | <strong>Screws:</strong> Tata | <strong>📍 D.G.Pudur, Erode - 638503</strong></p>
+        </div>
+    </div>
+
+    <script>
+        // ========== SHEETS CODE ==========
+        let profileEntryCount = 0;
+        let linerEntryCount = 0;
+        const BEND_CHARGE_DEFAULT = 10.76;
+        const breadths = { 'profile': 1085, 'liner': 1188 };
+        const defaultPrices = { '0.35': 323, '0.40': 345, '0.45': 366, '0.47': 387.50, '0.50': 420 };
+        const colors = ['Bare','Off White','Brick Red','Royal Blue','Light Blue','Mist Green',
+                       'Caulfield Green','Reliance Green','Purple','Violet','Orange','Gray'];
+
+        document.addEventListener('DOMContentLoaded', function() {
+            addProfileEntry(); // Start with one profile entry (quantity 0)
+            addLinerEntry();   // Start with one liner entry (quantity 0)
+            loadCustomRidges();
+            initRidge();
+            addScrewEntry();   // one screw entry with quantity 0
+            document.getElementById('ridgeLength').addEventListener('input', updateGrandTotal);
+            document.getElementById('ridgePricePerFoot').addEventListener('input', updateGrandTotal);
+            document.getElementById('svgUpload').addEventListener('change', handleSvgUpload);
+
+            document.getElementById('bendCharge').addEventListener('input', function() {
+                const val = parseFloat(this.value) || 0;
+                document.getElementById('bendChargeDisplay').textContent = val.toFixed(2);
+                document.getElementById('bendChargeNote').textContent = val.toFixed(2);
+                updateAllSheetCalculations();
+            });
+        });
+
+        function toggleRidgeSection() {
+            document.getElementById('ridgeSection').classList.toggle('visible');
+            if (document.getElementById('ridgeSection').classList.contains('visible')) {
+                drawRidgeDiagram();
+            }
+        }
+
+        // ===== PROFILE SHEET FUNCTIONS =====
+        function addProfileEntry() {
+            profileEntryCount++;
+            const container = document.getElementById('profile-entries-container');
+            const row = createProfileSheetRow(profileEntryCount);
+            container.appendChild(row);
+            addProfileSheetListeners(row);
+            calculateSheetEntry(row);
+        }
+
+        function createProfileSheetRow(count) {
+            const row = document.createElement('div');
+            row.className = 'entry-row';
+            row.id = `profile-entry-${count}`;
+            row.dataset.type = 'profile';
+            
+            let colorOptions = '<option value="">Select Color</option>';
+            colors.forEach(c => colorOptions += `<option value="${c}">${c}</option>`);
+            
+            row.innerHTML = `
+                <div class="dimension-group">
+                    <div class="dimension-label">Length</div>
+                    <div class="dimension-inputs">
+                        <div><input type="number" class="feet" value="0" min="0"><div class="input-unit">ft</div></div>
+                        <div><input type="number" class="inches" value="0" min="0" max="11"><div class="input-unit">in</div></div>
+                    </div>
+                </div>
+                <div><div class="dimension-label">Thick</div><select class="thickness"><option value="0.35">0.35</option><option value="0.40">0.40</option><option value="0.45">0.45</option><option value="0.47">0.47</option><option value="0.50">0.50</option></select></div>
+                <div class="custom-price-section"><div class="dimension-label">Custom</div><div class="custom-price-controls"><input type="checkbox" class="use-custom"><input type="number" class="custom-price-input" placeholder="₹" step="0.01" min="0" disabled style="width:60px;"></div></div>
+                <div class="color-section"><div class="dimension-label">Color</div><select class="color-select">${colorOptions}</select></div>
+                <div class="quantity-section"><div class="dimension-label">Qty</div><input type="number" class="quantity-input" value="0" min="0" step="1"></div>
+                <div class="bend-section"><div class="dimension-label">Bend</div><input type="checkbox" class="bend-checkbox"></div>
+                <div class="area-display area-per-sheet">0.000</div>
+                <div class="area-display total-area">0.000</div>
+                <div class="price-display price">₹0</div>
+                <button type="button" class="delete-btn" onclick="deleteSheetEntry('profile', ${count})">✕</button>
+            `;
+            return row;
+        }
+
+        function addProfileSheetListeners(row) {
+            row.querySelectorAll('input, select').forEach(input => {
+                input.addEventListener('input', function() { calculateSheetEntry(row); });
+            });
+            
+            const customCheckbox = row.querySelector('.use-custom');
+            const customPriceInput = row.querySelector('.custom-price-input');
+            const thicknessSelect = row.querySelector('.thickness');
+            
+            customCheckbox.addEventListener('change', function() {
+                customPriceInput.disabled = !this.checked;
+                if (this.checked) customPriceInput.value = defaultPrices[thicknessSelect.value];
+                calculateSheetEntry(row);
+            });
+            
+            thicknessSelect.addEventListener('change', function() {
+                if (customCheckbox.checked) customPriceInput.value = defaultPrices[this.value];
+                calculateSheetEntry(row);
+            });
+        }
+
+        // ===== LINER SHEET FUNCTIONS (no bend checkbox) =====
+        function addLinerEntry() {
+            linerEntryCount++;
+            const container = document.getElementById('liner-entries-container');
+            const row = createLinerSheetRow(linerEntryCount);
+            container.appendChild(row);
+            addLinerSheetListeners(row);
+            calculateSheetEntry(row);
+        }
+
+        function createLinerSheetRow(count) {
+            const row = document.createElement('div');
+            row.className = 'entry-row';
+            row.id = `liner-entry-${count}`;
+            row.dataset.type = 'liner';
+            
+            let colorOptions = '<option value="">Select Color</option>';
+            colors.forEach(c => colorOptions += `<option value="${c}">${c}</option>`);
+            
+            row.innerHTML = `
+                <div class="dimension-group">
+                    <div class="dimension-label">Length</div>
+                    <div class="dimension-inputs">
+                        <div><input type="number" class="feet" value="0" min="0"><div class="input-unit">ft</div></div>
+                        <div><input type="number" class="inches" value="0" min="0" max="11"><div class="input-unit">in</div></div>
+                    </div>
+                </div>
+                <div><div class="dimension-label">Thick</div><select class="thickness"><option value="0.35">0.35</option><option value="0.40">0.40</option><option value="0.45">0.45</option><option value="0.47">0.47</option><option value="0.50">0.50</option></select></div>
+                <div class="custom-price-section"><div class="dimension-label">Custom</div><div class="custom-price-controls"><input type="checkbox" class="use-custom"><input type="number" class="custom-price-input" placeholder="₹" step="0.01" min="0" disabled style="width:60px;"></div></div>
+                <div class="color-section"><div class="dimension-label">Color</div><select class="color-select">${colorOptions}</select></div>
+                <div class="quantity-section"><div class="dimension-label">Qty</div><input type="number" class="quantity-input" value="0" min="0" step="1"></div>
+                <div class="bend-section"><div class="dimension-label"></div></div>
+                <div class="area-display area-per-sheet">0.000</div>
+                <div class="area-display total-area">0.000</div>
+                <div class="price-display price">₹0</div>
+                <button type="button" class="delete-btn" onclick="deleteSheetEntry('liner', ${count})">✕</button>
+            `;
+            return row;
+        }
+
+        function addLinerSheetListeners(row) {
+            row.querySelectorAll('input, select').forEach(input => {
+                input.addEventListener('input', function() { calculateSheetEntry(row); });
+            });
+            
+            const customCheckbox = row.querySelector('.use-custom');
+            const customPriceInput = row.querySelector('.custom-price-input');
+            const thicknessSelect = row.querySelector('.thickness');
+            
+            customCheckbox.addEventListener('change', function() {
+                customPriceInput.disabled = !this.checked;
+                if (this.checked) customPriceInput.value = defaultPrices[thicknessSelect.value];
+                calculateSheetEntry(row);
+            });
+            
+            thicknessSelect.addEventListener('change', function() {
+                if (customCheckbox.checked) customPriceInput.value = defaultPrices[this.value];
+                calculateSheetEntry(row);
+            });
+        }
+
+        function deleteSheetEntry(type, id) {
+            const entry = document.getElementById(`${type}-entry-${id}`);
+            if (entry) {
+                entry.remove();
+                calculateTotal();
+            }
+        }
+
+        function calculateSheetEntry(row) {
+            const feet = parseFloat(row.querySelector('.feet').value) || 0;
+            const inches = parseFloat(row.querySelector('.inches').value) || 0;
+            const thickness = row.querySelector('.thickness').value;
+            const quantity = parseInt(row.querySelector('.quantity-input').value) || 0;
+            const useCustom = row.querySelector('.use-custom').checked;
+            const customPrice = parseFloat(row.querySelector('.custom-price-input').value) || 0;
+            const bendRequired = row.querySelector('.bend-checkbox')?.checked || false;
+            const type = row.dataset.type;
+            
+            const totalInches = (feet * 12) + inches;
+            const lengthInMm = totalInches * 25.4;
+            const breadthInMm = breadths[type];
+            const areaPerSheet = (lengthInMm * breadthInMm) / 1000000;
+            const totalArea = areaPerSheet * quantity;
+            
+            let pricePerSqm = useCustom ? customPrice : defaultPrices[thickness];
+            if (!pricePerSqm) pricePerSqm = defaultPrices[thickness];
+            
+            let totalPrice = totalArea * pricePerSqm;
+            const bendCharge = parseFloat(document.getElementById('bendCharge').value) || 0;
+            if (bendRequired) totalPrice += totalArea * bendCharge;
+            
+            row.querySelector('.area-per-sheet').textContent = areaPerSheet.toFixed(3);
+            row.querySelector('.total-area').textContent = totalArea.toFixed(3);
+            row.querySelector('.price').textContent = '₹' + totalPrice.toFixed(2);
+        }
+
+        function updateAllSheetCalculations() {
+            document.querySelectorAll('#profile-entries-container .entry-row, #liner-entries-container .entry-row').forEach(row => {
+                calculateSheetEntry(row);
+            });
+            calculateTotal();
+        }
+
+        // ========== SCREW FUNCTIONS (MULTIPLE) ==========
+        let screwEntryCounter = 0;
+
+        function addScrewEntry(size = "1", qty = 0, price = 0) {
+            screwEntryCounter++;
+            const container = document.getElementById('screws-container');
+            const row = document.createElement('div');
+            row.className = 'screw-row';
+            row.id = `screw-entry-${screwEntryCounter}`;
+            row.dataset.index = screwEntryCounter;
+            
+            const sizeOptions = `<option value="0.75" ${size === "0.75" ? "selected" : ""}>3/4"</option>
+                                 <option value="1" ${size === "1" ? "selected" : ""}>1"</option>
+                                 <option value="1.6" ${size === "1.6" ? "selected" : ""}>1.6"</option>
+                                 <option value="2" ${size === "2" ? "selected" : ""}>2"</option>`;
+            
+            row.innerHTML = `
+                <select class="screw-size">${sizeOptions}</select>
+                <input type="number" class="screw-qty" value="${qty}" min="0" step="1">
+                <input type="number" class="screw-price" value="${price}" min="0" step="0.5">
+                <span class="screw-line-total">₹0.00</span>
+                <button class="delete-screw-btn" onclick="removeScrewEntry(${screwEntryCounter})">✕</button>
+            `;
+            
+            const qtyInput = row.querySelector('.screw-qty');
+            const priceInput = row.querySelector('.screw-price');
+            const sizeSelect = row.querySelector('.screw-size');
+            const lineTotalSpan = row.querySelector('.screw-line-total');
+            
+            const updateLineTotal = () => {
+                const q = parseFloat(qtyInput.value) || 0;
+                const p = parseFloat(priceInput.value) || 0;
+                const total = q * p;
+                lineTotalSpan.textContent = '₹' + total.toFixed(2);
+                updateScrewTotal();
+            };
+            
+            qtyInput.addEventListener('input', updateLineTotal);
+            priceInput.addEventListener('input', updateLineTotal);
+            sizeSelect.addEventListener('change', updateLineTotal);
+            
+            container.appendChild(row);
+            updateLineTotal();
+        }
+
+        function removeScrewEntry(id) {
+            const row = document.getElementById(`screw-entry-${id}`);
+            if (row) {
+                row.remove();
+                updateScrewTotal();
+            }
+        }
+
+        function updateScrewTotal() {
+            let total = 0;
+            document.querySelectorAll('.screw-row').forEach(row => {
+                const qty = parseFloat(row.querySelector('.screw-qty').value) || 0;
+                const price = parseFloat(row.querySelector('.screw-price').value) || 0;
+                total += qty * price;
+            });
+            document.getElementById('screwTotalPrice').innerText = '₹' + total.toFixed(2);
+            updateGrandTotal();
+        }
+
+        function getScrewTotal() {
+            let total = 0;
+            document.querySelectorAll('.screw-row').forEach(row => {
+                const qty = parseFloat(row.querySelector('.screw-qty').value) || 0;
+                const price = parseFloat(row.querySelector('.screw-price').value) || 0;
+                total += qty * price;
+            });
+            return total;
+        }
+
+        function calcScrewTotal() {
+            updateScrewTotal();
+        }
+
+        function calcRidgeTotal() {
+            const len = parseFloat(document.getElementById('ridgeLength').value) || 0;
+            const price = parseFloat(document.getElementById('ridgePricePerFoot').value) || 0;
+            document.getElementById('ridgeTotalPrice').innerText = '₹' + (len * price).toFixed(2);
+            updateGrandTotal();
+        }
+
+        function updateGrandTotal() {
+            if (document.getElementById('result').style.display === 'block') {
+                calculateTotal();
+            }
+        }
+
+        function calculateTotal() {
+            const profileEntries = document.querySelectorAll('#profile-entries-container .entry-row');
+            const linerEntries = document.querySelectorAll('#liner-entries-container .entry-row');
+            
+            let profileSheets = 0, linerSheets = 0, totalSqm = 0, totalPrice = 0, sheetsWithBend = 0;
+            let profileBreakdown = {}, linerBreakdown = {};
+
+            profileEntries.forEach(entry => {
+                calculateSheetEntry(entry);
+                const qty = parseInt(entry.querySelector('.quantity-input').value) || 0;
+                const thick = entry.querySelector('.thickness').value;
+                const area = parseFloat(entry.querySelector('.total-area').textContent) || 0;
+                const price = parseFloat(entry.querySelector('.price').textContent.replace('₹','')) || 0;
+                const bend = entry.querySelector('.bend-checkbox')?.checked || false;
+
+                profileSheets += qty;
+                totalSqm += area;
+                totalPrice += price;
+                if (bend) sheetsWithBend += qty;
+
+                if (!profileBreakdown[thick]) profileBreakdown[thick] = { sheets:0, sqm:0, price:0, sheetsWithBend:0 };
+                profileBreakdown[thick].sheets += qty;
+                profileBreakdown[thick].sqm += area;
+                profileBreakdown[thick].price += price;
+                if (bend) profileBreakdown[thick].sheetsWithBend += qty;
+            });
+
+            linerEntries.forEach(entry => {
+                calculateSheetEntry(entry);
+                const qty = parseInt(entry.querySelector('.quantity-input').value) || 0;
+                const thick = entry.querySelector('.thickness').value;
+                const area = parseFloat(entry.querySelector('.total-area').textContent) || 0;
+                const price = parseFloat(entry.querySelector('.price').textContent.replace('₹','')) || 0;
+
+                linerSheets += qty;
+                totalSqm += area;
+                totalPrice += price;
+
+                if (!linerBreakdown[thick]) linerBreakdown[thick] = { sheets:0, sqm:0, price:0 };
+                linerBreakdown[thick].sheets += qty;
+                linerBreakdown[thick].sqm += area;
+                linerBreakdown[thick].price += price;
+            });
+
+            let ridgeTotal = 0;
+            if (document.getElementById('ridgeSection').classList.contains('visible')) {
+                const ridgeLen = parseFloat(document.getElementById('ridgeLength').value) || 0;
+                const ridgePrice = parseFloat(document.getElementById('ridgePricePerFoot').value) || 0;
+                ridgeTotal = ridgeLen * ridgePrice;
+            }
+
+            const screwTotal = getScrewTotal();
+            const extraTotal = ridgeTotal + screwTotal;
+            const grandTotal = totalPrice + extraTotal;
+
+            document.getElementById('totalProfileSheets').textContent = profileSheets;
+            document.getElementById('totalLinerSheets').textContent = linerSheets;
+            document.getElementById('totalSqm').textContent = totalSqm.toFixed(3);
+            document.getElementById('sheetsWithBend').textContent = sheetsWithBend;
+            document.getElementById('summaryTotal').textContent = '₹' + totalPrice.toFixed(2);
+            document.getElementById('extraTotal').textContent = '₹' + extraTotal.toFixed(2);
+            document.getElementById('grandTotal').textContent = 'Grand Total: ₹' + grandTotal.toFixed(2);
+
+            let html = '<h4>Breakdown by Thickness</h4>';
+            
+            if (profileSheets > 0) {
+                html += '<h5>Profile Sheets</h5><table><tr><th>Thickness</th><th>Sheets</th><th>With Bend</th><th>Area (m²)</th><th>Price</th></tr>';
+                for (const t in profileBreakdown) {
+                    html += `<tr><td>${t}mm</td><td>${profileBreakdown[t].sheets}</td><td>${profileBreakdown[t].sheetsWithBend || 0}</td><td>${profileBreakdown[t].sqm.toFixed(3)}</td><td>₹${profileBreakdown[t].price.toFixed(2)}</td></tr>`;
+                }
+                html += '</table>';
+            }
+            
+            if (linerSheets > 0) {
+                html += '<h5>Liner Sheets</h5><table><tr><th>Thickness</th><th>Sheets</th><th>Area (m²)</th><th>Price</th></tr>';
+                for (const t in linerBreakdown) {
+                    html += `<tr><td>${t}mm</td><td>${linerBreakdown[t].sheets}</td><td>${linerBreakdown[t].sqm.toFixed(3)}</td><td>₹${linerBreakdown[t].price.toFixed(2)}</td></tr>`;
+                }
+                html += '</table>';
+            }
+            
+            document.getElementById('breakdown').innerHTML = html;
+            document.getElementById('result').style.display = 'block';
+        }
+
+        function toggleAllProfileBends() {
+            const chk = document.getElementById('bendAllRequired').checked;
+            document.querySelectorAll('#profile-entries-container .bend-checkbox').forEach(cb => cb.checked = chk);
+            calculateTotal();
+        }
+
+        // ========== PRINT FUNCTION ==========
+        function printBill() {
+            const name = document.getElementById('customerName')?.value || '';
+            const phone = document.getElementById('customerPhone')?.value || '';
+            const address = document.getElementById('customerAddress')?.value || '';
+
+            let customerHtml = '';
+            if (name || phone || address) {
+                customerHtml = '<div class="customer-info">';
+                customerHtml += '<h4>Customer Details</h4>';
+                if (name) customerHtml += `<p><strong>Name:</strong> ${name}</p>`;
+                if (phone) customerHtml += `<p><strong>Phone:</strong> ${phone}</p>`;
+                if (address) customerHtml += `<p><strong>Address:</strong> ${address}</p>`;
+                customerHtml += '</div>';
+            }
+
+            const profileEntries = document.querySelectorAll('#profile-entries-container .entry-row');
+            const linerEntries = document.querySelectorAll('#liner-entries-container .entry-row');
+            const ridgeVisible = document.getElementById('ridgeSection').classList.contains('visible');
+            const ridgeLen = ridgeVisible ? parseFloat(document.getElementById('ridgeLength').value) || 0 : 0;
+            const ridgePrice = ridgeVisible ? parseFloat(document.getElementById('ridgePricePerFoot').value) || 0 : 0;
+            const ridgeTotal = ridgeLen * ridgePrice;
+            const screwRows = document.querySelectorAll('.screw-row');
+            const grandTotal = parseFloat(document.getElementById('grandTotal').textContent.replace('Grand Total: ₹','')) || 0;
+
+            let totalSheetsCount = 0;
+            profileEntries.forEach(e => totalSheetsCount += parseInt(e.querySelector('.quantity-input').value) || 0);
+            linerEntries.forEach(e => totalSheetsCount += parseInt(e.querySelector('.quantity-input').value) || 0);
+
+            let tableRows = '';
+            let sn = 1;
+
+            if (profileEntries.length > 0) {
+                tableRows += `<tr><td colspan="6" style="background:#e2e8f0; font-weight:600;">PROFILE SHEETS</td></tr>`;
+                profileEntries.forEach(entry => {
+                    const feet = parseFloat(entry.querySelector('.feet').value) || 0;
+                    const inches = parseFloat(entry.querySelector('.inches').value) || 0;
+                    const thick = entry.querySelector('.thickness').value;
+                    const qty = parseInt(entry.querySelector('.quantity-input').value) || 0;
+                    const color = entry.querySelector('.color-select').value || 'Standard';
+                    const bend = entry.querySelector('.bend-checkbox')?.checked || false;
+                    const areaTot = parseFloat(entry.querySelector('.total-area').textContent) || 0;
+                    const price = parseFloat(entry.querySelector('.price').textContent.replace('₹','')) || 0;
+
+                    if (qty > 0 && (feet > 0 || inches > 0)) {
+                        tableRows += `
+                            <tr>
+                                <td>${sn}</td>
+                                <td><strong>Profile Sheet</strong><br>${feet}'${inches}" | ${color} | ${thick}mm${bend?' + Bend':''}</td>
+                                <td>${qty}</td>
+                                <td>${areaTot.toFixed(3)} m²</td>
+                                <td>₹${price.toFixed(2)}</td>
+                            </tr>
+                        `;
+                        sn++;
+                    }
+                });
+            }
+
+            if (linerEntries.length > 0) {
+                tableRows += `<tr><td colspan="6" style="background:#e2e8f0; font-weight:600;">LINER SHEETS</td></tr>`;
+                linerEntries.forEach(entry => {
+                    const feet = parseFloat(entry.querySelector('.feet').value) || 0;
+                    const inches = parseFloat(entry.querySelector('.inches').value) || 0;
+                    const thick = entry.querySelector('.thickness').value;
+                    const qty = parseInt(entry.querySelector('.quantity-input').value) || 0;
+                    const color = entry.querySelector('.color-select').value || 'Standard';
+                    const areaTot = parseFloat(entry.querySelector('.total-area').textContent) || 0;
+                    const price = parseFloat(entry.querySelector('.price').textContent.replace('₹','')) || 0;
+
+                    if (qty > 0 && (feet > 0 || inches > 0)) {
+                        tableRows += `
+                            <tr>
+                                <td>${sn}</td>
+                                <td><strong>Liner Sheet</strong><br>${feet}'${inches}" | ${color} | ${thick}mm</td>
+                                <td>${qty}</td>
+                                <td>${areaTot.toFixed(3)} m²</td>
+                                <td>₹${price.toFixed(2)}</td>
+                            </tr>
+                        `;
+                        sn++;
+                    }
+                });
+            }
+
+            if (ridgeTotal > 0) {
+                tableRows += `
+                    <tr>
+                        <td>${sn}</td>
+                        <td><strong>Ridge</strong> (${ridgeConfigs[currentRidgeId].name})<br>Length: ${ridgeLen} ft @ ₹${ridgePrice}/ft</td>
+                        <td></td>
+                        <td></td>
+                        <td>₹${ridgeTotal.toFixed(2)}</td>
+                    </tr>
+                `;
+                sn++;
+            }
+
+            if (screwRows.length > 0) {
+                tableRows += `<tr><td colspan="6" style="background:#e2e8f0; font-weight:600;">TATA SCREWS</td></tr>`;
+                screwRows.forEach(row => {
+                    const sizeSelect = row.querySelector('.screw-size');
+                    const sizeValue = sizeSelect.value;
+                    let sizeText = sizeValue === '0.75' ? '3/4"' : sizeValue === '1' ? '1"' : sizeValue === '1.6' ? '1.6"' : '2"';
+                    const qty = parseFloat(row.querySelector('.screw-qty').value) || 0;
+                    const price = parseFloat(row.querySelector('.screw-price').value) || 0;
+                    const total = qty * price;
+                    if (qty > 0 && price > 0) {
+                        tableRows += `
+                            <tr>
+                                <td>${sn}</td>
+                                <td><strong>Tata Screw</strong> (${sizeText})<br>${qty} pcs @ ₹${price}/pc</td>
+                                <td>${qty}</td>
+                                <td></td>
+                                <td>₹${total.toFixed(2)}</td>
+                            </tr>
+                        `;
+                        sn++;
+                    }
+                });
+            }
+
+            let ridgeSvgHtml = '';
+            if (ridgeTotal > 0) {
+                const cfg = ridgeConfigs[currentRidgeId];
+                const color = ridgeColors[Object.keys(ridgeConfigs).indexOf(currentRidgeId) % ridgeColors.length];
+                let paths = '';
+                cfg.paths.forEach(p => paths += `<path d="${p}" stroke="${color}" stroke-width="200" fill="none" stroke-linecap="round" stroke-linejoin="round" />`);
+                let labels = '';
+                cfg.sides.forEach(side => {
+                    const pos = cfg.labels[side];
+                    const dim = sideDims[side] || 0;
+                    if (pos) {
+                        labels += `<text x="${pos.x}" y="${pos.y-800}" font-size="1000" fill="black" font-weight="bold" text-anchor="middle">${side}${dim>0 ? ' '+dim+'"' : ''}</text>`;
+                    }
+                });
+                ridgeSvgHtml = `
+                    <div class="ridge-print-diagram">
+                        <h4>Ridge Diagram</h4>
+                        <svg viewBox="0 0 21000 29700" preserveAspectRatio="xMidYMid meet">
+                            ${paths}
+                            ${labels}
+                        </svg>
+                    </div>
+                `;
+            }
+
+            const printHtml = `
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <meta charset="UTF-8">
+                    <title>SS ROOFINGS - Quotation</title>
+                    <style>
+                        body { font-family: 'Poppins', Arial, sans-serif; margin: 10px; background: white; color: #2d3748; }
+                        .print-bill { max-width: 1100px; margin: 0 auto; }
+                        .bill-container { border: 4px solid #2d3748; border-radius: 20px; padding: 15px; }
+                        .header { text-align: center; margin-bottom: 15px; }
+                        .header h1 { color: #2d3748; font-size: 24px; margin-bottom: 2px; }
+                        .header h1 span { color: #fbbf24; background: #2d3748; padding: 0 8px; border-radius: 40px; }
+                        .header p { margin: 2px 0; color: #4a5568; }
+                        .customer-info { background: #f8f9fa; padding: 10px; border-radius: 8px; margin-bottom: 15px; border: 2px solid #e2e8f0; }
+                        table { width: 100%; border-collapse: collapse; margin: 15px 0; font-size: 12px; }
+                        th { background: #34495e; color: white; padding: 6px; text-align: left; border: 2px solid #2d3748; font-weight: 600; }
+                        td { padding: 5px 6px; border: 2px solid #cbd5e0; }
+                        tr:nth-child(even) { background: #f7fafc; }
+                        .ridge-print-diagram { text-align: center; margin: 10px 0; page-break-inside: avoid; }
+                        .ridge-print-diagram svg { max-width: 220px; height: auto; border: none; background: transparent; padding: 0; }
+                        .summary { background: #e8f4fc; padding: 10px; border-radius: 8px; margin: 15px 0; display: flex; justify-content: space-between; border: 2px solid #bee3f8; }
+                        .terms { background: #fff3cd; padding: 10px; border-radius: 8px; border: 2px solid #ffeaa7; }
+                        @media print {
+                            body { margin: 0; padding: 5px; }
+                        }
+                    </style>
+                </head>
+                <body>
+                    <div class="print-bill">
+                        <div class="bill-container">
+                            <div class="header">
+                                <h1>SS <span>ROOFINGS</span></h1>
+                                <p>D.G. Pudur, Erode - 638503</p>
+                                <p>📞 97505 93833 | 73737 52663</p>
+                                <h3>QUOTATION</h3>
+                            </div>
+                            ${customerHtml}
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>S.No</th>
+                                        <th>Description</th>
+                                        <th>Qty</th>
+                                        <th>Area (m²)</th>
+                                        <th>Amount (₹)</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    ${tableRows}
+                                </tbody>
+                            </table>
+                            ${ridgeSvgHtml}
+                            <div class="summary">
+                                <div><strong>Summary</strong><br>Total Sheets: ${totalSheetsCount}<br>Total Area: ${document.getElementById('totalSqm')?.textContent || '0'} m²</div>
+                                <div style="text-align:right;"><strong>Grand Total: ₹${grandTotal.toFixed(2)}</strong></div>
+                            </div>
+                            <div class="terms">
+                                <h4>Terms & Conditions</h4>
+                                <ul style="margin-left:20px;">
+                                    <li>Prices include GST</li>
+                                    <li>Delivery 3-5 working days</li>
+                                    <li>±2% variation accepted</li>
+                                    <li>50% advance required</li>
+                                    <li>Quotation valid for 15 days</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </body>
+                </html>
+            `;
+
+            const printWin = window.open('', '_blank');
+            printWin.document.write(printHtml);
+            printWin.document.close();
+            printWin.focus();
+            printWin.print();
+        }
+
+        function resetAll() {
+            document.getElementById('profile-entries-container').innerHTML = '';
+            document.getElementById('liner-entries-container').innerHTML = '';
+            profileEntryCount = 0;
+            linerEntryCount = 0;
+            addProfileEntry();
+            addLinerEntry();
+
+            document.getElementById('bendCharge').value = BEND_CHARGE_DEFAULT;
+            document.getElementById('bendChargeDisplay').textContent = BEND_CHARGE_DEFAULT.toFixed(2);
+            document.getElementById('bendChargeNote').textContent = BEND_CHARGE_DEFAULT.toFixed(2);
+            document.getElementById('bendAllRequired').checked = false;
+
+            document.getElementById('ridgeLength').value = 0;
+            document.getElementById('ridgePricePerFoot').value = 0;
+            document.getElementById('ridgeTotalPrice').innerText = '₹0.00';
+            sideDims = { A:0, B:0, C:0, D:0, E:0, F:0 };
+            buildSideInputs();
+            updateOverlayLabels();
+
+            document.getElementById('screws-container').innerHTML = '';
+            screwEntryCounter = 0;
+            addScrewEntry();
+
+            document.getElementById('result').style.display = 'none';
+        }
+
+        // ========== RIDGE CONFIG (12 built‑in ridges) ==========
+        const ridgeConfigs = {
+            ridge1: { name:'Ridge 1', sides:['A','B'], paths:['M2384.14,16274.5 L10728.82,10831.53 L18548.64,16274.5'],
+                labels:{ A:{x:4034.6, y:12749.03}, B:{x:15685.21, y:13053.51} } },
+            ridge2: { name:'Ridge 2', sides:['A','B','C','D'], paths:['M3986.04,17206.31 L3986.04,14062.75 L10401.59,10429.31 L16734.88,14057.01 L16734.88,17200.58'],
+                labels:{ A:{x:5155.55, y:16396.99}, B:{x:5501.73, y:11585.19}, C:{x:14680.21, y:11764.06}, D:{x:14739.13, y:16626.88} } },
+            ridge3: { name:'Ridge 3', sides:['A','B'], paths:['M5313.8,5709.22 L5313.8,16820.92 L17732.78,16755.56'],
+                labels:{ A:{x:3076.44, y:10852.77}, B:{x:11059.07, y:19410.75} } },
+            ridge4: { name:'Ridge 4', sides:['A','B','C','D','E'], paths:['M5258.31,8363.59 L5258.31,18551.05 L15924.41,18619.42 L15924.41,12397.53 L13052.75,11098.48 L12916.02,8295.19'],
+                labels:{ A:{x:3157.9, y:14612.21}, B:{x:10082.31, y:20946.41}, C:{x:17101.6, y:16704.14}, D:{x:13030.55, y:13836.9}, E:{x:14353.19, y:9639.72} } },
+            ridge5: { name:'Ridge 5', sides:['A','B','C','D'], paths:['M2441.99,14092.02 L5191.87,15483.29 L10691.61,11460.66 L16191.34,15483.29 L18941.22,14091.99'],
+                labels:{ A:{x:2565.68, y:16511.08}, B:{x:6430.47, y:12670.11}, C:{x:14121.26, y:12703.37}, D:{x:17814.32, y:16472.31} } },
+            ridge6: { name:'Ridge 6', sides:['A','B','C','D'], paths:['M7508.29,10160.89 L4893.22,8149.32 L4863.02,18537.26 L15282.96,18537.26 L13271.43,15922.16'],
+                labels:{ A:{x:6673.77, y:8151.86}, B:{x:2934.2, y:14475.96}, C:{x:9078.36, y:20784.85}, D:{x:15288.49, y:16795.54} } },
+            ridge7: { name:'Ridge 7', sides:['A','B','C','D','E'], paths:['M4154.66,10097.58 L6345.01,10128.41 L6375.85,20463.22 L13995.86,20432.38 L13995.86,13398.52 L16587.27,13398.52'],
+                labels:{ A:{x:4825.39, y:8676.52}, B:{x:4342.71, y:15984.87}, C:{x:9739.55, y:22477.02}, D:{x:15226.63, y:17708.03}, E:{x:14548.4, y:12321.99} } },
+            ridge8: { name:'Ridge 8', sides:['A','B','C','D','E'], paths:['M4679.3,10669.51 L7084.3,10669.51 L7115.55,21101.58 L14486.67,21101.58 L14517.93,13886.58 L12518.95,13886.58'],
+                labels:{ A:{x:5475.13, y:9192.71}, B:{x:5084.87, y:16884.31}, C:{x:10343.5, y:23354.05}, D:{x:15694.31, y:18743.09}, E:{x:12942.95, y:12736.61} } },
+            ridge9: { name:'Ridge 9', sides:['A','B','C','D','E','F'], paths:['M8416.73,8839.56 L8025.26,11344.99 L5363.27,12989.2 L5363.27,20896.96 L13270.98,20857.82 L14915.2,18195.79 L17420.63,17804.32'],
+                labels:{ A:{x:9645.94, y:10108.3}, B:{x:4774.65, y:11302.92}, C:{x:3250.94, y:17330.99}, D:{x:8331.49, y:23647.55}, E:{x:14938.28, y:21494.26}, F:{x:15490.19, y:16567.37} } },
+            ridge10: { name:'Ridge 10', sides:['A','B'], paths:['M3739.74,9302.7 L3739.74,16984.56 L17607.61,17147.99'],
+                labels:{ A:{x:5161.41, y:13053.69}, B:{x:11778.54, y:19596.91} } },
+            ridge11: { name:'Ridge 11', sides:['A','B','C'], paths:['M2640.39,11982.33 L2640.39,18159.78 L15755.06,18164.08 L17656.88,20525.61'],
+                labels:{ A:{x:3900.44, y:15191.76}, B:{x:8136.74, y:20284.29}, C:{x:17862.94, y:18443.21} } },
+            ridge12: { name:'Ridge 12', sides:['A','B','C','D','E'], paths:['M18582.62,9109.93 L2244.24,9109.93 L2244.24,18843.44 L11679.78,18793.78 L11679.78,14125.67 L18284.66,14076.01'],
+                labels:{ A:{x:8660.76, y:7535.54}, B:{x:3223.92, y:14635.71}, C:{x:6490.78, y:20745.31}, D:{x:12759.94, y:17466.38}, E:{x:14668.93, y:13047.89} } }
+        };
+
+        let currentRidgeId = 'ridge1';
+        let sideDims = { A:0, B:0, C:0, D:0, E:0, F:0 };
+        const ridgeColors = ['#9f7aea','#4299e1','#48bb78','#fbbf24','#f56565','#ed64a6','#667eea','#9f7aea','#4299e1','#48bb78','#fbbf24','#f56565'];
+
+        function loadCustomRidges() {
+            const stored = localStorage.getItem('ss_roofing_custom_ridges');
+            if (stored) {
+                try {
+                    const custom = JSON.parse(stored);
+                    Object.assign(ridgeConfigs, custom);
+                } catch (e) { console.error(e); }
+            }
+        }
+
+        function saveCustomRidges() {
+            const custom = {};
+            for (let key in ridgeConfigs) if (key.startsWith('custom')) custom[key] = ridgeConfigs[key];
+            localStorage.setItem('ss_roofing_custom_ridges', JSON.stringify(custom));
+        }
+
+        function deleteCustomRidge(key) {
+            if (!key.startsWith('custom')) return;
+            delete ridgeConfigs[key];
+            saveCustomRidges();
+            if (currentRidgeId === key) currentRidgeId = 'ridge1';
+            generateRidgeCards();
+            selectRidge(currentRidgeId);
+        }
+
+        function initRidge() {
+            generateRidgeCards();
+            selectRidge('ridge1');
+        }
+
+        function generateRidgeCards() {
+            const container = document.getElementById('ridgeSelector');
+            let html = '';
+            const keys = Object.keys(ridgeConfigs);
+            const builtin = keys.filter(k => k.startsWith('ridge')).sort((a,b)=>parseInt(a.replace('ridge',''))-parseInt(b.replace('ridge','')));
+            const custom = keys.filter(k => k.startsWith('custom')).sort((a,b)=>parseInt(a.replace('custom',''))-parseInt(b.replace('custom','')));
+            const sortedKeys = [...builtin, ...custom];
+
+            sortedKeys.forEach((key, index) => {
+                const cfg = ridgeConfigs[key];
+                const selectedClass = (key === currentRidgeId) ? 'selected' : '';
+                const color = ridgeColors[index % ridgeColors.length];
+                const isCustom = key.startsWith('custom');
+                html += `<div class="ridge-card ${selectedClass}" data-ridge="${key}" style="position:relative;">`;
+                if (isCustom) html += `<button class="delete-ridge-btn" onclick="event.stopPropagation(); deleteCustomRidge('${key}')">✕</button>`;
+                html += `<svg viewBox="0 0 21000 29700" preserveAspectRatio="xMidYMid meet" onclick="selectRidge('${key}')">`;
+                html += `<path d="${cfg.paths[0]}" stroke="${color}" stroke-width="300" fill="none" />`;
+                html += `</svg><h4>${cfg.name}</h4><small>${cfg.sides.length} sides</small></div>`;
+            });
+            container.innerHTML = html;
+        }
+
+        function selectRidge(id) {
+            currentRidgeId = id;
+            document.querySelectorAll('.ridge-card').forEach(c => c.classList.remove('selected'));
+            document.querySelector(`.ridge-card[data-ridge="${id}"]`).classList.add('selected');
+            drawRidgeDiagram();
+            buildSideInputs();
+            updateSideSelector();
+        }
+
+        function drawRidgeDiagram() {
+            const cfg = ridgeConfigs[currentRidgeId];
+            const svg = document.getElementById('ridgeDiagram');
+            const color = ridgeColors[Object.keys(ridgeConfigs).indexOf(currentRidgeId) % ridgeColors.length];
+            let paths = '';
+            cfg.paths.forEach(p => paths += `<path d="${p}" stroke="${color}" stroke-width="200" fill="none" stroke-linecap="round" stroke-linejoin="round" />`);
+            svg.innerHTML = paths;
+            updateOverlayLabels();
+        }
+
+        function updateOverlayLabels() {
+            const cfg = ridgeConfigs[currentRidgeId];
+            const overlay = document.getElementById('labelOverlay');
+            const viewW = 21000, viewH = 29700;
+            let html = '';
+            cfg.sides.forEach(side => {
+                const pos = cfg.labels[side];
+                if (!pos) return;
+                const left = (pos.x / viewW) * 100;
+                const top = (pos.y / viewH) * 100;
+                const dim = sideDims[side] || 0;
+                const cls = dim > 0 ? 'side-label dim-set' : 'side-label';
+                html += `<div class="${cls}" style="left:${left}%; top:${top}%;" data-side="${side}" onclick="selectSideFromLabel('${side}')">${side}${dim>0 ? ' '+dim+'"' : ''}</div>`;
+            });
+            overlay.innerHTML = html;
+        }
+
+        function selectSideFromLabel(side) {
+            document.getElementById('sideSelect').value = side;
+            highlightSide();
+        }
+
+        function highlightSide() {
+            const selected = document.getElementById('sideSelect').value;
+            document.querySelectorAll('.side-label').forEach(l => {
+                if (l.dataset.side === selected) l.classList.add('highlight');
+                else l.classList.remove('highlight');
+            });
+        }
+
+        function updateSideSelector() {
+            const cfg = ridgeConfigs[currentRidgeId];
+            const select = document.getElementById('sideSelect');
+            select.innerHTML = '';
+            cfg.sides.forEach(s => {
+                const opt = document.createElement('option');
+                opt.value = s; opt.textContent = `Side ${s}`;
+                select.appendChild(opt);
+            });
+            highlightSide();
+        }
+
+        function buildSideInputs() {
+            const cfg = ridgeConfigs[currentRidgeId];
+            const grid = document.getElementById('dimensionGrid');
+            grid.innerHTML = '';
+            cfg.sides.forEach(side => {
+                const card = document.createElement('div');
+                card.className = 'dim-card';
+                card.innerHTML = `<strong>${side}</strong>
+                    <input type="number" id="dim-${side}" value="${sideDims[side]||0}" min="0" step="0.1" 
+                           onchange="updateDim('${side}', this.value)" placeholder="inches">`;
+                grid.appendChild(card);
+            });
+        }
+
+        function updateDim(side, val) {
+            sideDims[side] = parseFloat(val) || 0;
+            updateOverlayLabels();
+        }
+
+        function handleSvgUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const svgText = e.target.result;
+                try {
+                    const parser = new DOMParser();
+                    const svgDoc = parser.parseFromString(svgText, "image/svg+xml");
+                    const svgElement = svgDoc.documentElement;
+
+                    let pathD = null;
+                    const polyline = svgElement.querySelector('polyline');
+                    if (polyline && polyline.getAttribute('points')) {
+                        const points = polyline.getAttribute('points').trim().replace(/\s+/g, ' ').split(' ');
+                        if (points.length >= 2) pathD = 'M' + points.join(' L');
+                    } else {
+                        const pathElem = svgElement.querySelector('path');
+                        if (pathElem && pathElem.getAttribute('d')) pathD = pathElem.getAttribute('d');
+                    }
+                    if (!pathD) throw new Error("No polyline or path found");
+
+                    const labels = {};
+                    const textElems = svgElement.querySelectorAll('text');
+                    textElems.forEach(t => {
+                        const x = parseFloat(t.getAttribute('x'));
+                        const y = parseFloat(t.getAttribute('y'));
+                        const letter = t.textContent.trim().toUpperCase();
+                        if (x && y && letter && letter.match(/[A-Z]/)) labels[letter] = { x, y };
+                    });
+                    if (Object.keys(labels).length === 0) throw new Error("No text labels found");
+
+                    const customKeys = Object.keys(ridgeConfigs).filter(k => k.startsWith('custom'));
+                    let nextNum = customKeys.length ? Math.max(...customKeys.map(k=>parseInt(k.replace('custom',''))))+1 : 13;
+                    const newId = 'custom' + nextNum;
+                    const newName = `Ridge ${Object.keys(ridgeConfigs).length + 1}`;
+                    ridgeConfigs[newId] = { name: newName, sides: Object.keys(labels).sort(), paths: [pathD], labels: labels };
+                    saveCustomRidges();
+                    generateRidgeCards();
+                    selectRidge(newId);
+                } catch (err) {
+                    alert("Could not parse SVG. Please ensure it contains a polyline or path and text labels.");
+                    console.error(err);
+                }
+            };
+            reader.readAsText(file);
+            event.target.value = '';
+        }
+    </script>
+</body>
+</html>
